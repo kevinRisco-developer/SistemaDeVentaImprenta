@@ -10,5 +10,5 @@ import com.grupo.proyectointegradori.entity.Categoria;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
     @Query(value = "CALL totalCategoriaxMesAnio(:anio, :mes)", nativeQuery = true)
-    List<Object[]> getTotalCategoriaxMesAnio(@Param("anio") String mes, @Param("mes") String anio);
+    List<Object[]> getTotalCategoriaxMesAnio(@Param("mes") String mes, @Param("anio") String anio);
 }

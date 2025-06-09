@@ -46,13 +46,15 @@ public class WebSecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/login", "/css/**", "/js/**").permitAll()
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated())
             .formLogin(form -> form
                     .loginPage("/login")
                     .permitAll())
             .logout(logout -> logout
                     .logoutUrl("/logout")
-                    .permitAll());
+                    .permitAll())
+                ;
         return http.build();
     }
 }

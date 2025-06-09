@@ -20,4 +20,14 @@ public class HomeController {
     public String logout() {
         return "logout";
     }
+
+    @GetMapping("/registrar")
+    public String registrar() {
+        return "registrar";
+    }
+
+    @GetMapping("/categorias")
+    public String categorias() {
+        return "categorias";
+    }
 }

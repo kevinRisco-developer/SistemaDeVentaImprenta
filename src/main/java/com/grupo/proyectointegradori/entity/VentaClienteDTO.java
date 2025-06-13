@@ -1,5 +1,5 @@
 
-package com.imprenta.sistemaventa.model;
+package com.grupo.proyectointegradori.entity;
 
 public class VentaClienteDTO {
     private String nroDocumento;

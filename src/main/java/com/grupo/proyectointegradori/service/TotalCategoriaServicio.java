@@ -1,6 +1,8 @@
 
-package com.imprenta.sistemaventa.model;
+package com.grupo.proyectointegradori.service;
 
+import com.grupo.proyectointegradori.repository.TotalCategoriaRepositorio;
+import com.grupo.proyectointegradori.entity.TotalCategoriaDTO;
 import org.springframework.stereotype.Service;
 import java.util.List;
 

@@ -1,8 +1,8 @@
 
-package com.imprenta.sistemaventa.controller;
+package com.grupo.proyectointegradori.Controllers;
 
-import com.imprenta.sistemaventa.model.GastosCategoriaDTO;
-import com.imprenta.sistemaventa.model.GastosCategoriaServicio;
+import com.grupo.proyectointegradori.entity.GastosCategoriaDTO;
+import com.grupo.proyectointegradori.service.GastosCategoriaServicio;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

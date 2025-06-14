@@ -1,6 +1,7 @@
 
-package com.imprenta.sistemaventa.model;
+package com.grupo.proyectointegradori.repository;
 
+import com.grupo.proyectointegradori.entity.ClienteComprasDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.StoredProcedureQuery;

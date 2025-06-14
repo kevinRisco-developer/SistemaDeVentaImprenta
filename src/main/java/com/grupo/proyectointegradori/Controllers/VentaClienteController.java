@@ -1,8 +1,8 @@
 
-package com.imprenta.sistemaventa.controller;
+package com.grupo.proyectointegradori.Controllers;
 
-import com.imprenta.sistemaventa.model.VentaClienteDTO;
-import com.imprenta.sistemaventa.model.VentaClienteServicio;
+import com.grupo.proyectointegradori.entity.VentaClienteDTO;
+import com.grupo.proyectointegradori.service.VentaClienteServicio;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;

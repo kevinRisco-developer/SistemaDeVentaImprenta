@@ -11,4 +11,10 @@ import com.grupo.proyectointegradori.entity.Categoria;
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
     @Query(value = "CALL totalCategoriaxMesAnio(:anio, :mes)", nativeQuery = true)
     List<Object[]> getTotalCategoriaxMesAnio(@Param("mes") String mes, @Param("anio") String anio);
+
+    @Query(value = "CALL mostrarCategorias()", nativeQuery = true)
+    List<Object[]> getCategorias();
+
+    @Query(value ="CALL eliminarCategoria(:id);", nativeQuery = true)
+    boolean eliminarCategoria(@Param("id") int id);
 }

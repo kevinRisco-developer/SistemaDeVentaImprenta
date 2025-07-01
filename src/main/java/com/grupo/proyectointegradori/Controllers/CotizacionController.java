@@ -1,7 +1,6 @@
 package com.grupo.proyectointegradori.Controllers;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,4 +54,12 @@ public class CotizacionController {
         cotizacionRepository.delete(cotizacion);
         return "Cotizacion con id: " + id + " eliminada!";
     }
+
+    // @GetMapping("/cotizaciones")
+    // public String getTotalCotizaciones(Model model) {
+    // List<Object[]> listaCotizaciones =
+    // cotizacionRepository.getTotalCotizaciones();
+    // model.addAttribute("cotizaciones", listaCotizaciones);
+    // return "home.html";
+    // }
 }

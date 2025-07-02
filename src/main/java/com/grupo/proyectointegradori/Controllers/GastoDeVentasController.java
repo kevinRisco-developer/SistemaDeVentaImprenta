@@ -19,40 +19,40 @@ import com.grupo.proyectointegradori.repository.GastoDeVentasRepository;
 @RequestMapping("/gastoDeVentas")
 public class GastoDeVentasController {
     @Autowired
-    private GastoDeVentasRepository gatodeventarepository;
+    private GastoDeVentasRepository gastodeventarepository;
 
     @GetMapping
     public List<GastoDeVentas> getAll() {
-        return gatodeventarepository.findAll();
+        return gastodeventarepository.findAll();
     }
 
     @GetMapping("/{id}")
     public GastoDeVentas getGastoDeVentasById(@PathVariable Long id) {
-        GastoDeVentas gastodeventas = gatodeventarepository.findById(id)
+        GastoDeVentas gastodeventas = gastodeventarepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No se encontro el gasto con id: " + id));
         return gastodeventas;
     }
 
     @PostMapping
     public GastoDeVentas insertGasto(@RequestBody GastoDeVentas gastodeventas) {
-        return gatodeventarepository.save(gastodeventas);
+        return gastodeventarepository.save(gastodeventas);
     }
 
     @PutMapping("/{id}")
     public GastoDeVentas updateGasto(@PathVariable Long id, @RequestBody GastoDeVentas gastoventadetail) {
-        GastoDeVentas gastoventa = gatodeventarepository.findById(id)
+        GastoDeVentas gastoventa = gastodeventarepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No se encontro el gasto con id: " + id));
         gastoventa.setDescripcionGasto(gastoventadetail.getDescripcionGasto());
         gastoventa.setIdDetalle(gastoventadetail.getIdDetalle());
         gastoventa.setCosto(gastoventadetail.getCosto());
-        return gatodeventarepository.save(gastoventa);
+        return gastodeventarepository.save(gastoventa);
     }
 
     @DeleteMapping("/{id}")
     public String deleteGasto(@PathVariable Long id) {
-        GastoDeVentas gastoventa = gatodeventarepository.findById(id)
+        GastoDeVentas gastoventa = gastodeventarepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("No se encontro el gasto con id: " + id));
-        gatodeventarepository.delete(gastoventa);
+        gastodeventarepository.delete(gastoventa);
         return "Se elimino el gasto con id: " + id;
     }
 }

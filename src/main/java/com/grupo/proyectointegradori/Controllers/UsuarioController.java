@@ -61,9 +61,17 @@ public class UsuarioController {
     }
 
     @GetMapping("/reporteclientecompras")
-    public List<Object[]> getReporteClienteCompras(@RequestParam("anio") String anio,
-            @RequestParam String mes) {
+    public List<Object[]> getReporteClienteCompras(
+            @RequestParam("anio") String anio,
+            @RequestParam("mes") String mes) {
         return usuarioRepository.getReporteclientecompras(anio, mes);
     }
     
+    @GetMapping("/reporteventacliente")
+    public List<Object[]> getReporteVentaCliente(
+            @RequestParam("nombre") String nombre,
+            @RequestParam("anio") String anio,
+            @RequestParam("mes") String mes){
+                return usuarioRepository.getReporteVentaCliente(nombre,anio,mes);
+    }
 }

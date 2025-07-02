@@ -13,4 +13,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     List<Object[]> getReporteclientecompras(@Param("anio") String anio, @Param("mes") String mes);
 
     java.util.Optional<Usuario> findByCorreo(String correo);
+    
+    @Query(value = "CALL reporteVentaCliente(:nombre, :anio, :mes)", nativeQuery = true)
+    List<Object[]> getReporteVentaCliente(@Param("nombre") String nombre, 
+            @Param("anio") String anio, @Param("mes") String mes);
 }

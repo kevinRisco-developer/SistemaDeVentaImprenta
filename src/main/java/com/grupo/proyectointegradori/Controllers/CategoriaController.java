@@ -2,7 +2,6 @@ package com.grupo.proyectointegradori.Controllers;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,7 @@ import com.grupo.proyectointegradori.repository.CategoriaRepository;
 public class CategoriaController {
     @Autowired
     private CategoriaRepository categoriaRepository;
-
+    
     @GetMapping
     public List<Categoria> getAllCategoria() {
         return categoriaRepository.findAll();
@@ -53,6 +52,14 @@ public class CategoriaController {
     public List<Object[]> getTotalCategoriaXAnioYMes(
             @RequestParam("anio") String anio,
             @RequestParam("mes") String mes) {
-        return categoriaRepository.getTotalCategoriaxMesAnio(anio, mes);
+                return categoriaRepository.getTotalCategoriaxMesAnio(anio,mes);
     }
+    
+    @GetMapping("/gastoscategoria")
+    public List<Object[]> generarReporte(
+        @RequestParam int idCat1,
+        @RequestParam int idCat2){
+            return categoriaRepository.getReporteGastosPorCategoria(idCat1, idCat2);
+        }
 }
+

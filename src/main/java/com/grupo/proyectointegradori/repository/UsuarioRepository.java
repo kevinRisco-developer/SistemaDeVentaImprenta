@@ -13,4 +13,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     List<Object[]> getReporteclientecompras(@Param("anio") String anio, @Param("mes") String mes);
 
     java.util.Optional<Usuario> findByCorreo(String correo);
+
+    @Query(value = "CALL typeUser(:correo,:pass)", nativeQuery = true)
+    List<Object[]> getUserByUserAndPass(@Param("correo") String correo, @Param("pass") String pass);
+
+    @Query(value = "CALL mostrarSoloClientes()", nativeQuery = true)
+    List<Usuario> showOnlyClients();
 }

@@ -66,4 +66,5 @@ public class UsuarioController {
         return usuarioRepository.getReporteclientecompras(anio, mes);
     }
     
+    
 }

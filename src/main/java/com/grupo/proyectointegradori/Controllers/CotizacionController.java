@@ -1,7 +1,10 @@
 package com.grupo.proyectointegradori.Controllers;
 
+import org.springframework.ui.Model;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,44 +13,75 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.grupo.proyectointegradori.DTO.DetalleDTO;
 import com.grupo.proyectointegradori.entity.Cotizacion;
+import com.grupo.proyectointegradori.entity.Detalle;
+import com.grupo.proyectointegradori.entity.EmailSenderService;
 import com.grupo.proyectointegradori.entity.Usuario;
 import com.grupo.proyectointegradori.repository.CotizacionRepository;
+import com.grupo.proyectointegradori.repository.DetalleRepository;
 import com.grupo.proyectointegradori.repository.UsuarioRepository;
 
-@RestController
+@Controller
 @RequestMapping("/cotizacion")
 public class CotizacionController {
+    @Autowired
+    private UsuarioController usuarioController;
+
     @Autowired
     private CotizacionRepository cotizacionRepository;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private DetalleRepository detalleRepository;
+
+    @Autowired
+    private EmailSenderService emailSenderService;
+
     @GetMapping
     public List<Cotizacion> getAllCotizacion() {
         return cotizacionRepository.findAll();
     }
 
-    @PostMapping("/insertarCotizacion")
-    public Cotizacion insertCotizacion(@RequestParam("nombreCliente") String idCliente,
-            @RequestParam("idVendedor") String idVendedor, @RequestParam("fecha") String fecha,
-            @RequestParam("days") int days) {
+    @PostMapping("/insertarConDetalles")
+    @ResponseBody
+    public ResponseEntity<?> guardarCotizacionConDetalles(@RequestBody CotizacionConDetallesDTO dto) {
+        try {
+            // Crear la cotización
+            Usuario cliente = usuarioRepository.findById(dto.getCotizacion().getNombreCliente())
+                    .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
-        // search
-        Usuario cliente = usuarioRepository.findById(idCliente)
-                .orElseThrow(
-                        () -> new RuntimeException("No se encontró el cliente con nroDocumento: " + idCliente));
-        Cotizacion cotizacion = new Cotizacion();
-        cotizacion.setNroDocumento(cliente.getNroDocumento());
-        cotizacion.setFecha(fecha);
-        cotizacion.setEstado("");
-        cotizacion.setNroDocVendedor(idVendedor);
-        cotizacion.setDiasCredito(days);
-        cotizacion.setIdVenta("");
-        return cotizacionRepository.save(cotizacion);
+            Cotizacion cot = new Cotizacion();
+            cot.setNroDocumento(cliente.getNroDocumento());
+            cot.setFecha(dto.getCotizacion().getFecha());
+            cot.setEstado("");
+            cot.setNroDocVendedor(dto.getCotizacion().getIdVendedor());
+            cot.setDiasCredito(dto.getCotizacion().getDays());
+            cot.setIdVenta("");
+
+            Cotizacion saved = cotizacionRepository.save(cot);
+
+            // Guardar los detalles
+            for (DetalleDTO detalleDto : dto.getDetalles()) {
+                Detalle det = new Detalle();
+                det.setIdCotizacion(saved.getIdCotizacion()); // ¡clave!
+                det.setCantidad(detalleDto.getCantidad());
+                det.setDescripcion(detalleDto.getDescripcion());
+                det.setPrecio(detalleDto.getPrecio());
+                det.setIdCategoria(detalleDto.getIdCategoria());
+                detalleRepository.save(det);
+            }
+
+            return ResponseEntity.ok("Guardado con éxito");
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(500).body("Error al guardar: " + ex.getMessage());
+        }
     }
 
     @GetMapping("/{id}")
@@ -75,11 +109,35 @@ public class CotizacionController {
         return "Cotizacion con id: " + id + " eliminada!";
     }
 
-    // @GetMapping("/cotizaciones")
-    // public String getTotalCotizaciones(Model model) {
-    // List<Object[]> listaCotizaciones =
-    // cotizacionRepository.getTotalCotizaciones();
-    // model.addAttribute("cotizaciones", listaCotizaciones);
-    // return "home.html";
-    // }
+    @PostMapping("/enviarCorreo")
+    public String enviarCorreo(@RequestParam("descripcionPreCotizacion") String descripcion,
+            @RequestParam("nroDocumento") String nroDocumento,
+            Model model) {
+        Usuario usuario = usuarioController.getUsuarioById(nroDocumento);
+        if (usuario != null) {
+            String cuerpo = """
+                    El cliente escribió: %s
+
+                    Datos del cliente:
+                    - Nro Documento: %s
+                    - Nombres Completos: %s %s
+                    - Tipo de Documento: %s
+                    - Correo: %s
+                    """.formatted(
+                    descripcion,
+                    usuario.getNroDocumento(),
+                    usuario.getNombres(),
+                    usuario.getApellidos(),
+                    usuario.getTipoDocumento(),
+                    usuario.getCorreo());
+            // Enviar correo
+            emailSenderService.sendEmail(
+                    "coorpkdrisco.002@gmail.com", // destino real o del usuario
+                    "PRE-COTIZACIÓN",
+                    cuerpo);
+        }
+        model.addAttribute("usuario", usuario);
+        return "indexCliente";
+    }
+
 }

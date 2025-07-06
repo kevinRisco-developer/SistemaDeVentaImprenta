@@ -42,14 +42,15 @@ public class HomeController {
     @PostMapping("/verifyaccess")
     public String loginVendYAdm(@RequestParam("username") String user,
             @RequestParam("password") String pass, Model model) {
-        List<Object[]> listUsu = userRepository.getUserByUserAndPass(user, pass);
-        if (listUsu.isEmpty() || listUsu == null) {
+
+        Usuario usuario = userRepository.getUserByUserAndPass(user, pass);
+        if (usuario == null) {
             model.addAttribute("error", "usuario o contraseña no correctos");
             return "login";
         }
-        String typeUser = String.valueOf(listUsu.get(0)[6]);
-        // send the id
-        String id = String.valueOf(listUsu.get(0)[0]);
+        String typeUser = usuario.getTipoUsuario();
+        String id = usuario.getNroDocumento();
+
         if (typeUser.equals("Vendedor")) {
             model.addAttribute("id", id);
             // send the list of Clients
@@ -63,6 +64,9 @@ public class HomeController {
             List<Object[]> listCtz = cotizacionRepository.getTotalCotizaciones();
             model.addAttribute("listaCotizaciones", listCtz);
             return "home";
+        } else if (typeUser.equals("Cliente")) {
+            model.addAttribute("usuario", usuario);
+            return "indexCliente";
         } else {
             return "";
         }

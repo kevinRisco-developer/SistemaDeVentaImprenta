@@ -46,7 +46,7 @@
                     <a class="nav-link" href="#">Cotizar</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Productos</a>
+                    <a class="nav-link active" aria-current="page" href="/categoriaContro/formularioInsertar">Nueva Categoria</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Perfil</a>
@@ -66,19 +66,20 @@
         <!-- ✅ Categorías reales -->
         <div class="masonry-item" th:each="cat : ${categorias}">
             <div class="card shadow-sm">
-                <img th:src="@{'/Imagenes/' + ${cat.idCategoria} + '.jpg'}" class="card-img-top" alt="Imagen categoría">
+                <img th:src="@{'/Imagenes/' + ${cat[1]} + '.jpg'}" class="card-img-top" alt="Imagen categoría">
                 <div class="card-body text-center">
-                    <h5 class="card-title" th:text="${cat.nombre}">Nombre categoría</h5>
+                    <h5 class="card-title" th:text="${cat[1]}"></h5>
                     <p class="card-text text-muted">Explora productos de esta categoría.</p>
                 </div>
                 <div class="card-footer text-center bg-white border-top-0">
-                    <a href="#" class="btn btn-outline-primary btn-sm">Ver más</a>
+                    <a th:href="@{/categoriaContro/formularioActualizar/{id}(id=${cat[0]})}" class="btn btn-outline-primary btn-sm">Editar</a>
+                    <a th:href="@{/categoriaContro/categoria/eliminar/{id}(id=${cat[0]})}" class="btn btn-outline-primary btn-sm">Eliminar</a>
                 </div>
             </div>
         </div>
 
         <!-- 🧪 Tarjetas de ejemplo si la lista está vacía -->
-        <div class="masonry-item" th:if="${categorias == null or categorias.isEmpty()}" th:each="i : ${#numbers.sequence(1,10)}">
+        <!-- <div class="masonry-item" th:if="${categorias == null or categorias.isEmpty()}" th:each="i : ${#numbers.sequence(1,10)}">
             <div class="card shadow-sm">
                 <img th:src="@{'/Imagenes/' + ${i} + '.jpg'}" class="card-img-top" alt="Categoría de ejemplo">
                 <div class="card-body text-center">
@@ -89,7 +90,7 @@
                     <a href="#" class="btn btn-outline-primary btn-sm">Ver más</a>
                 </div>
             </div>
-        </div>
+        </div> -->
 
     </div>
 </main>

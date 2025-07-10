@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Resultado de GastoDetalle</title>
+</head>
+    <body>
+        <h2>Resultado del procedimiento almacenado</h2>
+        <table border="1">
+            <tr>
+                <th>ID Detalle</th>
+                <th>Costo</th>
+                <th>Descripción</th>
+                <th>Mensaje</th>
+            </tr>
+            <tr th:each="row: ${resultado}">
+                <td th:text="${row.idDetalle}">ID</td>
+                <td th:text="${row.costo}">Costo</td>
+                <td th:text="${row.descripcion}">Descripción</td>
+                <td th:text="${row.mensaje}">Mensaje</td>
+            </tr>
+        </table>
+        <br>
+        <a th:href="@{/gastoDeVentas/formularioInsertar}">Volver al formulario para insertar</a>
+    </body>
+</html>

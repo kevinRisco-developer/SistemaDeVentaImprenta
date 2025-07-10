@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario GastoDeVentas</title>
+</head>
+<body>
+    <h2>Bienvenido al formulario</h2>
+        <div th:if="${accion != null and accion == 'insertar'}">
+            <h2>Formulario para insertar Gasto de Detalle de Venta</h2>
+            <form th:action="@{/gastoDeVentas/formularioInsertar}" method="GET">
+                <select name="idDetalle" required>
+                    <option value="" disabled selected hidden>Seleccione un id de Detalle existente</option>
+                    <option th:each="d: ${detalles}"
+                            th:value="${d.idDetallei
+                            th:text="'ID Detalle: ' + ${d.idDetalle}"
+                            th:selected="${d.idDetalle == id_seleccionado}">
+                    </option>
+                </select>
+                <button type="submit">Ver descripción</button>
+            </form>
+            <div th:if="${descripcion_detalle!=''}">
+                <h3>Descripción del detalle:</h3>
+                <p th:text="${descripcion_detalle}"></p>
+            </div>
+            <form th:action="@{/gastoDeVentas/insertar}" method="post">
+                <input type="hidden" name="idDetalle" th:value="${id_seleccionado}"/>
+                <h3>Ingrese el gasto del item:</h3>
+                <input type="text" name="costo" th:value="${costo}" required>
+                <h3>Ingrese la descripción del item:</h3>
+                <input type="text" name="descripcion" th:value="${descripcion}" required />
+                <button type="submit">Insertar</button>
+            </form>
+        </div>
+</body>
+</html>

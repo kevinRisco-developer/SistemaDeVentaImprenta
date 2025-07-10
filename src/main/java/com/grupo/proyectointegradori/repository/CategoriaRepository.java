@@ -14,4 +14,10 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
     
     @Query(value = "CALL reporteGastosPorCategoria(:idCat1, :idCat2)", nativeQuery = true)
     List<Object[]> getReporteGastosPorCategoria(@Param("idCat1") int idCat1, @Param("idCat2") int idCat2);
+
+    @Query(value = "CALL mostrarCategorias()", nativeQuery = true)
+    List<Object[]> getCategorias();
+
+    @Query(value ="CALL eliminarCategoria(:id);", nativeQuery = true)
+    boolean eliminarCategoria(@Param("id") int id);
 }

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Categoría</title>
+</head>
+<body>
+    <h2>Bienvenido al formulario</h2>
+        <div th:if="${accion != null and accion == 'actualizar'}">
+            <h2>Formulario para actualizar Categoría</h2>
+            <form th:action="@{/categoriaContro/actualizar/{id}(id=${id})}" method="POST">
+                <input type="hidden" name="id" th:value="${id}" />
+                <h3>Nombre: </h3>
+                <input type="text" name="nombre" th:value="${nombre}" required />
+                <button type="submit">Actualizar</button>
+            </form>
+        </div>
+        <div th:if="${accion != null and accion == 'insertar'}">
+            <h2>Formulario para insertar Categoría</h2>
+            <form th:action="@{/categoriaContro/insertar}" method="POST">
+                <h3>Nombre:</h3>
+                <input type="text" name="nombre" th:value="${nombre}" required />
+                <button type="submit">Insertar</button>
+            </form>
+        </div>
+</body>
+</html>

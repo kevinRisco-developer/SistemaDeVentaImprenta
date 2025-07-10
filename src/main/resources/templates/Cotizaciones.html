@@ -1,11 +1,50 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Inicio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<h2>Bienvenido</h2>
-<p th:text="'Hola ' + ${#authentication.name}"></p>
+    <!-- Now, want to redirect here -->
+    <div th:if="${listaDetallesCotizaciones != null and !listaDetallesCotizaciones.isEmpty()}">
+    <h3 th:text="'Cliente: ' +${listaDetallesCotizaciones[0][14]}+' '+${listaDetallesCotizaciones[0][15]}"></h3>
+    <h3 th:text="'Tipo de documento: '+${listaDetallesCotizaciones[0][13]}+'. Número de documento: ' +${listaDetallesCotizaciones[0][12]}"></h3>
+    <h3 th:text="'Número de cotización: '+${listaDetallesCotizaciones[0][6]}"></h3>
+    <h3 th:text="'Estado de cotización: ' +${listaDetallesCotizaciones[0][9]}"></h3>
+    <h3 th:text="'Fecha de emisión: ' +${listaDetallesCotizaciones[0][8]}"></h3>
+    <h3 th:text="'Vendedor id: ' +${listaDetallesCotizaciones[0][10]}+'. Nombres: '+${nombreVendedor}"></h3>
+
+    <table class="table table-striped table-bordered align-middle">
+        <thead class="table-primary">
+            <thead>
+                <tr>
+                    <td>IdDetalle</td>
+                    <td>Descripción</td>
+                    <td>Costo</td>
+                    <td>Categoria</td>
+                    <td>Acciones</td>
+                </tr>
+        </thead>
+        <tbody>
+            <tr th:each="l : ${listaDetallesCotizaciones}">
+                <td th:text="${l[0]}"></td>
+                <td th:text="${l[3]}"></td>
+                <td th:text="${l[4]}"></td><!-- This is the cost -->
+                <td th:text="${l[20]}"></td>
+                <td th:text="Acciones"></td>
+            </tr>
+            <tr>
+                <!-- <td colspan="5">
+                    <h2>Total: </h2>
+                </td> -->
+                <td><b th:text="'Total: s/'+${precioTotal}"></b></td> 
+            </tr>
+        </tbody>
+    </table>
+    </div>
+
+
+<p></p>
 </body>
 </html>

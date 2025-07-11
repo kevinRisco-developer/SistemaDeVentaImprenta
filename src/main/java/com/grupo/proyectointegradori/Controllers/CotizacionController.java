@@ -1,6 +1,8 @@
 package com.grupo.proyectointegradori.Controllers;
 
 import org.springframework.ui.Model;
+
+import java.io.IOException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.grupo.proyectointegradori.DTO.CotizacionUsuarioDTO;
 import com.grupo.proyectointegradori.DTO.DetalleDTO;
 import com.grupo.proyectointegradori.entity.Cotizacion;
 import com.grupo.proyectointegradori.entity.Detalle;
@@ -23,6 +26,9 @@ import com.grupo.proyectointegradori.entity.Usuario;
 import com.grupo.proyectointegradori.repository.CotizacionRepository;
 import com.grupo.proyectointegradori.repository.DetalleRepository;
 import com.grupo.proyectointegradori.repository.UsuarioRepository;
+import com.grupo.proyectointegradori.service.CotizacionService;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/cotizacion")
@@ -41,6 +47,9 @@ public class CotizacionController {
 
     @Autowired
     private EmailSenderService emailSenderService;
+
+    @Autowired
+    private CotizacionService cotizacionService;
 
     @GetMapping
     public List<Cotizacion> getAllCotizacion() {
@@ -138,6 +147,22 @@ public class CotizacionController {
         }
         model.addAttribute("usuario", usuario);
         return "indexCliente";
+    }
+
+    @GetMapping("/exportar-pdf/{idCotizacion}")
+    public void exportarPdf(@PathVariable Long idCotizacion, HttpServletResponse response)
+            throws IOException {
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=cotizacion_" +
+                idCotizacion + ".pdf");
+
+        try {
+            cotizacionService.generarPdfCotizacion(idCotizacion, response.getOutputStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Error al generar el PDF");
+        }
     }
 
 }

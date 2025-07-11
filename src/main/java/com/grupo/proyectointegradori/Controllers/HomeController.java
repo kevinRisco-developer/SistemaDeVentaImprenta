@@ -15,6 +15,7 @@ import com.grupo.proyectointegradori.repository.CategoriaRepository;
 import com.grupo.proyectointegradori.repository.CotizacionRepository;
 import com.grupo.proyectointegradori.repository.UsuarioRepository;
 import com.grupo.proyectointegradori.entity.Categoria;
+import com.grupo.proyectointegradori.entity.Cotizacion;
 import com.grupo.proyectointegradori.entity.Usuario;
 
 @Controller
@@ -52,13 +53,16 @@ public class HomeController {
         String id = usuario.getNroDocumento();
 
         if (typeUser.equals("Vendedor")) {
-            model.addAttribute("id", id);
+            model.addAttribute("id", id); // el nro de documento del vendedor
             // send the list of Clients
             List<Usuario> listaCliente = userRepository.showOnlyClients();
             model.addAttribute("listaCliente", listaCliente);
             // pass the list of Categoria
             List<Categoria> listCat = categoriaRepository.findAll();
             model.addAttribute("listaCategoria", listCat);
+            // I need the list of Cotizacion
+            List<Cotizacion> listCotizacion = cotizacionRepository.mostrarCotizacionesPorVendedor(id);
+            model.addAttribute("listaCotizacion", listCotizacion);
             return "indexVendedor";
         } else if (typeUser.equals("Admin")) {
             List<Object[]> listCtz = cotizacionRepository.getTotalCotizaciones();

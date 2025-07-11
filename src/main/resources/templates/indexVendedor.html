@@ -68,6 +68,36 @@
             <button id="btnProof">Crear Cotizacion con Detalles</button>
         </table>
     </div>
+    <div> <!-- Here you show the list of cotizaciones -->
+        <table>
+            <thead>
+                <tr>
+                    <td>Id Cotizacion</td>
+                    <td>Cliente</td>
+                    <td>Fecha</td>
+                    <td>Estado</td>
+                    <td>Dias Crédito</td>
+                    <td>Id Venta</td>
+                    <td>Exportar en PDF</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="co : ${listaCotizacion}">
+                    <td th:text="${co.idCotizacion}"></td>
+                    <td th:text="${co.nroDocumento}"></td>
+                    <td th:text="${co.fecha}"></td>
+                    <td th:text="${co.estado}"></td>
+                    <td th:text="${co.diasCredito}"></td>
+                    <td th:text="${co.idVenta}"></td>
+                    <td>
+                        <a th:href="@{'/cotizacion/exportar-pdf/' + ${co.idCotizacion}}" target="_blank">
+                            <button type="button">PDF</button>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <script th:inline="javascript">
         const clients = [[${listaCliente}]];
         console.log('Clientes:', clients);

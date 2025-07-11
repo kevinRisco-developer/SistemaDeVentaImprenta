@@ -5,7 +5,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
+import com.grupo.proyectointegradori.entity.Detalle;
+import com.grupo.proyectointegradori.DTO.CotizacionUsuarioDTO;
 import com.grupo.proyectointegradori.entity.Cotizacion;
 
 public interface CotizacionRepository extends JpaRepository<Cotizacion, Long> {
@@ -20,4 +21,10 @@ public interface CotizacionRepository extends JpaRepository<Cotizacion, Long> {
 
     @Query(value = "CALL mostarVendedorPorCotizacion(:id)", nativeQuery = true)
     String getNombreVendedor(@Param("id") Long id);
+
+    @Query(value = "call mostrarCotizacionesPorVendedor(:nroDocVendedor)", nativeQuery = true)
+    List<Cotizacion> mostrarCotizacionesPorVendedor(@Param("nroDocVendedor") String nroDocVendedor);
+
+    @Query(value = "call detallePorIdCotizacion(:id)", nativeQuery = true)
+    List<Detalle> detallePorIdCotizacion(@Param("id") Long id);
 }

@@ -1,5 +1,6 @@
 package com.grupo.proyectointegradori.Controllers;
 
+import com.grupo.proyectointegradori.entity.Cotizacion;
 import com.grupo.proyectointegradori.entity.Detalle;
 import java.util.List;
 
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.grupo.proyectointegradori.entity.GastoDeVentas;
 import com.grupo.proyectointegradori.repository.GastoDeVentasRepository;
+import com.grupo.proyectointegradori.response.GastoResponseActualizar;
 import com.grupo.proyectointegradori.response.GastoResponse;
+import com.grupo.proyectointegradori.service.CotizacionService;
 import com.grupo.proyectointegradori.service.GastoDeVentasService;
 import com.grupo.proyectointegradori.service.DetalleService;
 import org.springframework.stereotype.Controller;
@@ -28,15 +31,18 @@ public class GastoDeVentasController {
     private GastoDeVentasRepository gastodeventarepository;
     private GastoDeVentasService gastoService;
     private DetalleService detalleService;
+    private CotizacionService cotizacionService;
     
     public GastoDeVentasController(
             GastoDeVentasRepository gastodeventarepository, 
             GastoDeVentasService gastoService,
-            DetalleService detalleService
+            DetalleService detalleService,
+            CotizacionService cotizacionService
     ){
         this.detalleService=detalleService;
         this.gastoService=gastoService;
         this.gastodeventarepository=gastodeventarepository;
+        this.cotizacionService=cotizacionService;
     }
 
     @GetMapping
@@ -59,8 +65,9 @@ public class GastoDeVentasController {
         Model model
     ){
         List<GastoResponse> resultado = gastoService.insertarGastoDetalle(idDetalle, costo, descripcion);
+        model.addAttribute("tipoOperacion", "insertar");
         model.addAttribute("resultado", resultado);
-        return "resultadoGasto";
+        return "formGastoDetalle";
     }
     
     @GetMapping("/formularioInsertar")
@@ -84,6 +91,85 @@ public class GastoDeVentasController {
         }
         model.addAttribute("costo", costo!=null?costo:"");
         model.addAttribute("descripcion", descripcion!=null?descripcion:"");
+        return "formGastoDetalle";
+    }
+    
+    @PostMapping("/actualizar")
+    public String actualizarGastoDetalle(
+        @RequestParam(value = "idCotizacion", required = false) Long idCotizacion,
+        @RequestParam(value = "idDetalle", required = false) Long idDetalle,
+        @RequestParam(value = "idGastoDeVentas", required = false) Long idGastoDeVentas,
+        @RequestParam("descripcion") String descripcion,
+        @RequestParam("costo") Double costo,
+        Model model
+    ){
+        List<GastoResponseActualizar> resultado = gastoService.actualizarGastoDetalle(idCotizacion, idDetalle, idGastoDeVentas, descripcion, costo);
+        model.addAttribute("tipoOperacion", "actualizar");
+        model.addAttribute("resultado", resultado);
+        return "formGastoDetalle";
+    }
+    
+    @GetMapping("/formularioActualizar")
+    public String formularioActualizar(
+        @RequestParam(value = "idCotizacion", required = false) Long idCotizacion,
+        @RequestParam(value = "idDetalle", required = false) Long idDetalle,
+        @RequestParam(value = "idGastoDeVentas", required = false) Long idGastoDeVentas,
+        @RequestParam(value = "descripcion", required = false) String descripcion,
+        @RequestParam(value = "costo", required = false) Double costo,
+        Model model
+    ){
+        List<GastoDeVentas> gastos = gastoService.getGastos();
+        List<Detalle> detalles = detalleService.getDetalles();
+        List<Cotizacion> cotizaciones = cotizacionService.getCotizaciones();
+        model.addAttribute("accion", "actualizar");
+        model.addAttribute("gastos", gastos);
+        model.addAttribute("detalles", detalles);
+        model.addAttribute("cotizaciones", cotizaciones);
+        
+        if (idCotizacion != null){
+            cotizacionService.getCotizacionById(idCotizacion).ifPresent(cotizacion ->{
+                model.addAttribute("idCotizacionSeleccionado", cotizacion.getIdCotizacion());
+                model.addAttribute("documento", cotizacion.getNroDocumento());
+                model.addAttribute("vendedor", cotizacion.getNroDocVendedor());
+                model.addAttribute("fecha", cotizacion.getFecha());
+            });
+        }else{
+            model.addAttribute("idCotizacionSeleccionado", "");
+            model.addAttribute("documento", "");
+            model.addAttribute("vendedor", "");
+            model.addAttribute("fecha", "");
+        }
+        
+        if (idDetalle != null){
+            detalleService.getDetalleById(idDetalle).ifPresent(detalle ->{
+                model.addAttribute("idDetalleSeleccionado", detalle.getIdDetalle());
+                model.addAttribute("cantidad_detalle", detalle.getCantidad());
+                model.addAttribute("descripcion_detalle", detalle.getDescripcion());
+                model.addAttribute("total", detalle.getPrecio());
+            });
+        }else{
+            model.addAttribute("idDetalleSeleccionado", "");
+            model.addAttribute("cantidad_detalle", "");
+            model.addAttribute("descripcion_detalle", "");
+            model.addAttribute("total", "");
+        }
+        
+        if (idGastoDeVentas != null){
+            gastoService.getGastoById(idGastoDeVentas).ifPresent(gasto ->{
+                model.addAttribute("idGastoSeleccionado", gasto.getIdGastoDeVentas());
+                model.addAttribute("idDetalleGasto", gasto.getIdDetalle());
+                model.addAttribute("descripcion_gasto", gasto.getDescripcionGasto());
+                model.addAttribute("gasto", gasto.getCosto());
+            });
+        }else{
+            model.addAttribute("idGastoSeleccionado", "");
+            model.addAttribute("idDetalleGasto", "");
+            model.addAttribute("descripcion_gasto", "");
+            model.addAttribute("gasto", "");
+        }
+        
+        model.addAttribute("descripcion", descripcion);
+        model.addAttribute("costo", costo);
         return "formGastoDetalle";
     }
      

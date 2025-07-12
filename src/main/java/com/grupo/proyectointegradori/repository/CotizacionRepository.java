@@ -20,4 +20,7 @@ public interface CotizacionRepository extends JpaRepository<Cotizacion, Long> {
 
     @Query(value = "CALL mostarVendedorPorCotizacion(:id)", nativeQuery = true)
     String getNombreVendedor(@Param("id") Long id);
+    
+    @Query(value = "SELECT c.idCotizacion FROM cotizacion c ORDER BY c.idCotizacion ASC", nativeQuery = true)
+    List<Long> getIdCotizaciones();
 }

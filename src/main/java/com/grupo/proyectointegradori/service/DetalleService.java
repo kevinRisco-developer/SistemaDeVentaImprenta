@@ -23,4 +23,12 @@ public class DetalleService {
     public Optional<Detalle> getDetalleById(Long idDetalle){
         return detalleRepository.findById(idDetalle);
     }
+    
+    public List<Detalle> getDetallesPorCotizacion(Long idCotizacion){
+        return detalleRepository.findByIdCotizacion(idCotizacion);
+    }
+    
+    public List<Detalle> getDetallesConGastosPorCotizacion(Long idCotizacion){
+        return detalleRepository.findDetallesConGastosPorCotizacion(idCotizacion);
+    }
 }

@@ -1,19 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario GastoDeVentas</title>
-</head>
-<body>
-    <h2>Bienvenido al formulario</h2>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Formulario GastoDeVentas</title>
+    </head>
+    <body>
+
+        <!-- Botones para escoger formularios -->
+        <h2>Seleccione una acción</h2>
+        <form method="get" th:action="@{/gastoDeVentas/formularioInsertar}">
+            <button type="submit">Insertar Gasto de Detalle</button>
+        </form>
+        <form method="get" th:action="@{/gastoDeVentas/formularioActualizar}">
+            <button type="submit">Actualizar Gasto de Detalle</button>
+        </form>
+
+        <!-- Formulario de inserción -->
         <div th:if="${accion != null and accion == 'insertar'}">
             <h2>Formulario para insertar Gasto de Detalle de Venta</h2>
             <form th:action="@{/gastoDeVentas/formularioInsertar}" method="GET">
                 <select name="idDetalle" required>
                     <option value="" disabled selected hidden>Seleccione un id de Detalle existente</option>
                     <option th:each="d: ${detalles}"
-                            th:value="${d.idDetallei
+                            th:value="${d.idDetalle}"
                             th:text="'ID Detalle: ' + ${d.idDetalle}"
                             th:selected="${d.idDetalle == id_seleccionado}">
                     </option>
@@ -33,5 +43,93 @@
                 <button type="submit">Insertar</button>
             </form>
         </div>
-</body>
+
+        <!-- Formulario de actualización -->
+        <div th:if="${accion != null and accion == 'actualizar'}">
+            <h2>Formulario para actualizar Gasto de Detalle de Venta</h2>
+            
+            <!-- 1. Selección de nroDocumento -->
+            <div th:if="${nroDocumentos != null}">
+                <form th:action="@{/gastoDeVentas/formularioActualizar}" method="GET">
+                    <label>Número de documento:</label>
+                    <select name="nroDocumento" onchange="this.form.submit()" required>
+                        <option value="" disabled selected hidden>Seleccione un documento de identidad:</option>
+                        <option th:each="nro: ${nroDocumentos}"
+                                th:value="${nro}"
+                                th:text="${nro}"
+                                th:selected="${nro == nroDocumentoSeleccionado}">
+                        </option>
+                    </select>
+                </form>
+            </div>
+                
+            <!-- 2. Selección de cotización -->
+            <div th:if="${cotizaciones != null}">
+                <form th:action="@{/gastoDeVentas/formularioActualizar}" method="GET">
+                    <input type="hidden" name="nroDocumento" th:value="${nroDocumentoSeleccionado}">
+                    <label>Cotización:</label>
+                    <select name="idCotizacion" onchange="this.form.submit()" required>
+                        <option value="" disabled selected hidden>Seleccione una cotización</option>
+                        <option th:each="c: ${cotizaciones}"
+                                th:value="${c.idCotizacion}"
+                                th:text="'ID: ' + ${c.idCotizacion}"
+                                th:selected="${c.idCotizacion == idCotizacionSeleccionado}">
+                        </option>
+                    </select>
+                </form>
+            </div>
+            
+            <!-- 3. Selección de detalle -->
+            <div th:if="${detalles != null}">
+                <form th:action="@{/gastoDeVentas/formularioActualizar}" method="GET">
+                    <input type="hidden" name="nroDocumento" th:value="${nroDocumentoSeleccionado}">
+                    <input type="hidden" name="idCotizacion" th:value="${idCotizacionSeleccionado}">
+                    <label>Detalle:</label>
+                    <select name="idDetalle" onchange="this.form.submit()" required>
+                        <option value="" disabled selected hidden>Seleccione un detalle</option>
+                        <option th:each="d: ${detalles}"
+                                th:value="${d.idDetalle}"
+                                th:text="${d.descripcion}"
+                                th:selected="${d.idDetalle == idDetalleSeleccionado}">
+                        </option>
+                    </select>
+                </form>
+            </div>
+            
+            <!-- 4. Selección de gasto -->
+            <div th:if="${gastos != null}">
+                <form th:action="@{/gastoDeVentas/formularioActualizar}" method="GET">
+                    <input type="hidden" name="nroDocumento" th:value="${nroDocumentoSeleccionado}">
+                    <input type="hidden" name="idCotizacion" th:value="${idCotizacionSeleccionado}">
+                    <input type="hidden" name="idDetalle" th:value="${idDetalleSeleccionado}">
+                    <label>Gasto:</label>
+                    <select name="idGastoDeVentas" onchange="this.form.submit()" required>
+                        <option value="">Seleccione un gasto</option>   
+                        <option th:each="g: ${gastos}"
+                                th:value="${g.idGastoDeVentas}"
+                                th:text="'Gasto: ' + ${g.idGastoDeVentas}" 
+                                th:selected="${g.idGastoDeVentas == idGastoSeleccionado}">
+                        </option>
+                    </select>
+                </form>
+            </div>
+            
+            <!-- 5. Formulario de edición -->
+            <div th:if="${idGastoSeleccionado != null}"> 
+                <form th:action="@{/gastoDeVentas/actualizar}" method="post">
+                    <input type="hidden" name="idCotizacion" th:value="${idCotizacionSeleccionado}"/>
+                    <input type="hidden" name="idDetalle" th:value="${idDetalleSeleccionado}"/>
+                    <input type="hidden" name="idGastoDeVentas" th:value="${idGastoSeleccionado}"/>
+                    
+                    <label>Descripción:</label>
+                    <input type="text" name="descripcion" th:value="${descripcion_gasto}" required>
+                    
+                    <label>Costo:</label>
+                    <input type="number" step="0.01" name="costo" th:value="${gasto}" required />
+                    
+                    <button type="submit">Actualizar Gasto</button>
+                </form>
+            </div>
+        </div>
+    </body>
 </html>

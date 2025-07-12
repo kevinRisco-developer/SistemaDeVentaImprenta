@@ -20,4 +20,26 @@ public interface CotizacionRepository extends JpaRepository<Cotizacion, Long> {
 
     @Query(value = "CALL mostarVendedorPorCotizacion(:id)", nativeQuery = true)
     String getNombreVendedor(@Param("id") Long id);
+    
+    @Query(value = "SELECT c.idCotizacion FROM cotizacion c ORDER BY c.idCotizacion ASC", nativeQuery = true)
+    List<Long> getIdCotizaciones();
+    
+    List<Cotizacion> findByNroDocumento(String nroDocumento);
+    
+    @Query(value = """
+                   SELECT DISTINCT c.nroDocumento 
+                       FROM cotizacion c
+                       JOIN detalle d ON d.idCotizacion = c.idCotizacion
+                       JOIN gastodeventas gv 
+                   ON gv.idDetalle = d.idDetalle""", nativeQuery = true)
+    List<String> findNroDocumentosConGastos();
+    
+    @Query(value = """
+                   SELECT DISTINCT c.*
+                   FROM cotizacion c
+                   JOIN detalle d ON d.idCotizacion = c.idCotizacion
+                   JOIN gastodeventas gv 
+                   ON gv.idDetalle = d.idDetalle
+                   WHERE c.nroDocumento = :nroDocumento""", nativeQuery = true)
+    List<Cotizacion> findIdCotizacionesConGastosPorNroDocumento(@Param("nroDocumento") String nroDocumento);
 }

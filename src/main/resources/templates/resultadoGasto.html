@@ -7,21 +7,47 @@
 </head>
     <body>
         <h2>Resultado del procedimiento almacenado</h2>
-        <table border="1">
-            <tr>
-                <th>ID Detalle</th>
-                <th>Costo</th>
-                <th>Descripción</th>
-                <th>Mensaje</th>
-            </tr>
-            <tr th:each="row: ${resultado}">
-                <td th:text="${row.idDetalle}">ID</td>
-                <td th:text="${row.costo}">Costo</td>
-                <td th:text="${row.descripcion}">Descripción</td>
-                <td th:text="${row.mensaje}">Mensaje</td>
-            </tr>
-        </table>
+        <div th:if="${tipoOperacion == 'insertar'}">
+            <table border="1">
+                <tr>
+                    <th>ID Detalle</th>
+                    <th>Costo</th>
+                    <th>Descripción</th>
+                    <th>Mensaje</th>
+                </tr>
+                <tr th:each="row: ${resultado}">
+                    <td th:text="${row.idDetalle}">ID</td>
+                    <td th:text="${row.costo}">Costo</td>
+                    <td th:text="${row.descripcion}">Descripción</td>
+                    <td th:text="${row.mensaje}">Mensaje</td>
+                </tr>
+            </table>
+            <br>
+            <a th:href="@{/gastoDeVentas/formularioInsertar}">Volver al formulario de inserción</a>
+        </div>
+        <div th:if="${tipoOperacion == 'actualizar'}">
+            <table border="1">
+                <tr>
+                    <th>ID Cotización</th>
+                    <th>ID Detalle</th>
+                    <th>ID Gasto</th>
+                    <th>Costo</th>
+                    <th>Descripción</th>
+                    <th>Mensaje</th>
+                </tr>
+                <tr th:each="row: ${resultado}">
+                    <td th:text="${row.idCotizacion}">ID Cotización</td>
+                    <td th:text="${row.idDetalle}">ID Detalle</td>
+                    <td th:text="${row.idGastoDeVentas}">ID Gasto</td>
+                    <td th:text="${row.costo}">Costo</td>
+                    <td th:text="${row.descripcion}">Descripción</td>
+                    <td th:text="${row.mensaje}">Mensaje</td>
+                </tr>
+            </table>
+            <br>
+            <a th:href="@{/gastoDeVentas/formularioActualizar}">Volver al formulario de actualización</a>
+        </div>
         <br>
-        <a th:href="@{/gastoDeVentas/formularioInsertar}">Volver al formulario para insertar</a>
+        <a th:href="@{/}">Volver al inicio</a>
     </body>
 </html>

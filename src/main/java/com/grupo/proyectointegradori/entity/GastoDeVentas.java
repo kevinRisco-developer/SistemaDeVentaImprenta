@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,6 +18,9 @@ public class GastoDeVentas {
     private Long idGastoDeVentas;
     @Column(name = "idDetalle")
     private Long idDetalle;
+    @ManyToOne
+    @JoinColumn(name = "idDetalle", insertable = false, updatable = false)
+    private Detalle detalle;
     @Column(name = "descripcionGasto")
     private String descripcionGasto;
     @Column(name = "costo")
@@ -36,7 +41,15 @@ public class GastoDeVentas {
     public void setIdDetalle(Long idDetalle) {
         this.idDetalle = idDetalle;
     }
-
+    
+    public Detalle getDetalle() {
+        return detalle;
+    }
+    
+    public void setDetalle(Detalle detalle) {
+        this.detalle = detalle;
+    }
+    
     public String getDescripcionGasto() {
         return descripcionGasto;
     }

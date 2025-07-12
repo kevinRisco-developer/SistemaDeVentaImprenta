@@ -43,7 +43,7 @@ public class CotizacionController {
         cotizacion.setNroDocumento(cotizacionDetail.getNroDocumento());
         cotizacion.setFecha(cotizacionDetail.getFecha());
         cotizacion.setEstado(cotizacionDetail.getEstado());
-        cotizacion.setIdVenta(cotizacionDetail.getIdVenta());
+        cotizacion.setIdGastoDeVentas(cotizacionDetail.getIdGastoDeVentas());
         return cotizacionRepository.save(cotizacion);
     }
 

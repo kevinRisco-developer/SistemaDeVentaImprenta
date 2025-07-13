@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+  .daysCredit {
+    display: none;
+  }
+</style>
+</head>
+<body>
+    <h2>Bienvenido al Index del Vendedor</h2>
+    <nav>
+        <ul>
+            <button id="generarCotizacion">Generar Cotización</button><!-- DO this part-->
+        </ul>
+    </nav>
+    
+    <div id="divCotizacion">
+        <h3 th:text="'Número de documento del Vendedor: '+${id}"></h3>
+            <form action="/cotizacion/insertarCotizacion" method="post">
+                <h3>Cliente: </h3>
+                <input type="hidden" th:value="${id}" name="idVendedor"> <!-- This is the seller'id -->
+                <input type="text" id="inputName" name="nombreClienteVisible"> <!-- solo para mostrar -->
+                <input type="hidden" id="nroDocumentoCliente" name="nombreCliente"> <!-- se envía al backend -->
+
+                <div class="resultSearch">
+                </div>
+                <h3>Fecha: </h3>
+                <input type="date" name = "fecha">
+                <h3>Dias crédito: </h3>
+                <input type="checkbox" id="answerCredit">Sí
+                <div class="daysCredit">
+                    <h4>Ingrese días de crédito:</h4>
+                    <input type="number" value=0 id="days" name="days">
+                </div>
+                <button type="button" id="btnGenerarTodo">Generar</button>
+            </form>
+        <button id="agregarItemBtn">Agregar Item</button>
+        <table>
+            <thead>
+                <tr>
+                    <td>Cantidad</td>
+                    <td>Descripción</td>
+                    <td>Costo</td>
+                    <td>Categoría</td>
+                    <td>Acción</td>
+                </tr>
+            </thead>
+            <tbody id="tableCotizacion">
+                <tr id="firstRow">
+                    <td><input type="number" name="cantidad"></td>
+                    <td><input type="text" name="descripcion"></td> 
+                    <td><input type="number" name="costo"></td> 
+                    <td>
+                        <select name="categoria" id="categoria">
+                                <option th:each="cat : ${listaCategoria}" 
+                                        th:value="${cat.getIdCategoria()}" 
+                                        th:text="${cat.getNombre()}">
+                                </option>
+                        </select>
+                    </td>
+                    <td><button id="btnDelete">Eliminar</button></td>
+                </tr>
+            </tbody>
+            <button id="btnProof">Crear Cotizacion con Detalles</button>
+        </table>
+    </div>
+    <div> <!-- Here you show the list of cotizaciones -->
+        <table>
+            <thead>
+                <tr>
+                    <td>Id Cotizacion</td>
+                    <td>Cliente</td>
+                    <td>Fecha</td>
+                    <td>Estado</td>
+                    <td>Dias Crédito</td>
+                    <td>Id Venta</td>
+                    <td>Exportar en PDF</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="co : ${listaCotizacion}">
+                    <td th:text="${co.idCotizacion}"></td>
+                    <td th:text="${co.nroDocumento}"></td>
+                    <td th:text="${co.fecha}"></td>
+                    <td th:text="${co.estado}"></td>
+                    <td th:text="${co.diasCredito}"></td>
+                    <td th:text="${co.idVenta}"></td>
+                    <td>
+                        <a th:href="@{'/cotizacion/exportar-pdf/' + ${co.idCotizacion}}" target="_blank">
+                            <button type="button">PDF</button>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script th:inline="javascript">
+        const clients = [[${listaCliente}]];
+        console.log('Clientes:', clients);
+    </script>
+    <script th:src="@{/js/autocomplete.js}"></script>
+    <script th:src="@{/js/script.js}"></script>
+    <script th:src="@{/js/cotizacion.js}"></script>
+</body>
+</html>

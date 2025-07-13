@@ -1,0 +1,22 @@
+    <!DOCTYPE html>
+    <html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Index de Cliente</title>
+    </head>
+    <body>
+        <h3>Bienvenido al index del cliente!</h3>
+        <h3 th:text="'Estimado '+${usuario.nombres}+' '+${usuario.apellidos}+', realiza tu precotización'"></h3>
+        <button id="showPre-Cotizacion">Realizar pre-cotización</button>
+        <div id="form-precotizacion" style="display: none">
+            <p>Porfavor, ingresa las especificacion del pedido que deseas realizar. Detallar cantidad, gramagen del material, tipo de material y diseño.</p>
+            <form action="/cotizacion/enviarCorreo" method="POST">
+                <input type="hidden" name="nroDocumento" th:value="${usuario.nroDocumento}"><!-- gets the nroDocumento -->
+                <input type="text" name="descripcionPreCotizacion" placeholder="Ingresa tu pre-cotización">
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+        <script th:src="@{/js/precotizacion.js}"></script>
+    </body>
+    </html>

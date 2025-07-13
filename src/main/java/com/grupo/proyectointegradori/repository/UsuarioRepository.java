@@ -17,4 +17,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     @Query(value = "CALL reporteVentaCliente(:nombre, :anio, :mes)", nativeQuery = true)
     List<Object[]> getReporteVentaCliente(@Param("nombre") String nombre, 
             @Param("anio") String anio, @Param("mes") String mes);
+
+    @Query(value = "CALL typeUser(:correo,:pass)", nativeQuery = true)
+    Usuario getUserByUserAndPass(@Param("correo") String correo, @Param("pass") String pass);
+
+    @Query(value = "CALL mostrarSoloClientes()", nativeQuery = true)
+    List<Usuario> showOnlyClients();
+
+    
 }

@@ -22,10 +22,10 @@
         <div class="collapse navbar-collapse fs-5" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Cotizar</a>
+                    <a class="nav-link active" aria-current="page" href="/">Cotizaciones</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Productos</a>
+                    <a class="nav-link" href="/categorias">Categorias</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Perfil</a>
@@ -42,117 +42,39 @@
         <a href="#" class="btn btn-primary">Generar Cotización</a>
     </div>
 
-    <!-- Tabla de cotizaciones -->
-    <div th:if="${cotizaciones != null and !cotizaciones.isEmpty()}">
+    <!-- Tabla de cotizaciones --><!-- Here, it must goes -->
+    <div th:if="${listaCotizaciones != null and !listaCotizaciones.isEmpty()}">
         <div class="table-responsive">
             <table class="table table-striped table-bordered align-middle">
                 <thead class="table-primary">
                 <tr>
                     <th>ID</th>
-                    <th>Nro Documento</th>
+                    <th>Entidad</th>
                     <th>Fecha</th>
                     <th>Estado</th>
-                    <th>ID Venta</th>
                     <th>Acciones</th>
-                    <th>Pagar</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="c : ${cotizaciones}">
-                    <td th:text="${c.idCotizacion}">1</td>
-                    <td th:text="${c.nroDocumento}">12345678</td>
-                    <td th:text="${c.fecha}">2025-06-08</td>
-                    <td th:text="${c.estado}">Pendiente</td>
-                    <td th:text="${c.idVenta}">V001</td>
-                    <td>
-                        <a th:href="@{/cotizacion/ver/{id}(id=${c.idCotizacion})}" class="btn btn-sm btn-outline-primary">Ver</a>
-                    </td>
-                    <td>
-                        <a th:href="@{/pagar/{id}(id=${c.idCotizacion})}" class="btn btn-sm btn-success">Pagar</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>1001</td>
-                    <td>71234567</td>
-                    <td>2025-06-08</td>
-                    <td>Pendiente</td>
-                    <td>V0001</td>
-                    <td><a href="#" class="btn btn-sm btn-outline-primary">Ver</a></td>
-                    <td><a href="#" class="btn btn-sm btn-success">Pagar</a></td>
-                </tr>
-                <tr>
-                    <td>1002</td>
-                    <td>81234567</td>
-                    <td>2025-06-01</td>
-                    <td>Pagada</td>
-                    <td>V0002</td>
-                    <td><a href="#" class="btn btn-sm btn-outline-primary">Ver</a></td>
-                    <td><a href="#" class="btn btn-sm btn-secondary disabled">Pagada</a></td>
-                </tr>
-                <tr>
-                    <td>1001</td>
-                    <td>71234567</td>
-                    <td>2025-06-08</td>
-                    <td>Pendiente</td>
-                    <td>V0001</td>
-                    <td><a href="#" class="btn btn-sm btn-outline-primary">Ver</a></td>
-                    <td><a href="#" class="btn btn-sm btn-success">Pagar</a></td>
-                </tr>
+                    
+                    <!--
+                    Here, comes the arrangement of 'Cotizaciones'
+                    -->
 
-                <!-- 🔽 Fila de muestra 2 -->
-                <tr>
-                    <td>1002</td>
-                    <td>81234567</td>
-                    <td>2025-06-01</td>
-                    <td>Pagada</td>
-                    <td>V0002</td>
-                    <td><a href="#" class="btn btn-sm btn-outline-primary">Ver</a></td>
-                    <td><a href="#" class="btn btn-sm btn-secondary disabled">Pagada</a></td>
+                <tr th:each="c : ${listaCotizaciones}">
+                    <td th:text="${c[0]}"></td>
+                    <td th:text="${c[1]}"></td>
+                    <td th:text="${c[2]}"></td>
+                    <td th:text="${c[3]}"></td>
+                    <td>
+                        <a th:href="@{/cotizacion/ver/{id}(id=${c[0]})}" class="btn btn-sm btn-outline-primary">Ver</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Mensaje si no hay cotizaciones -->
-    <div th:if="${cotizaciones == null or cotizaciones.isEmpty()}" class="text-center text-muted fs-5 mt-5">
-        <!--Aún no tiene cotizaciones.-->
-        <div class="table-responsive">
-            <table class="table table-striped table-bordered align-middle">
-                <thead class="table-primary">
-                <tr>
-                    <th>ID</th>
-                    <th>Nro Documento</th>
-                    <th>Fecha</th>
-                    <th>Estado</th>
-                    <th>ID Venta</th>
-                    <th>Acciones</th>
-                    <th>Pagar</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>1001</td>
-                    <td>71234567</td>
-                    <td>2025-06-08</td>
-                    <td>Pendiente</td>
-                    <td>V0001</td>
-                    <td><a href="#" class="btn btn-sm btn-outline-primary">Ver</a></td>
-                    <td><a href="#" class="btn btn-sm btn-success">Pagar</a></td>
-                </tr>
-                <tr>
-                    <td>1002</td>
-                    <td>81234567</td>
-                    <td>2025-06-01</td>
-                    <td>Pagada</td>
-                    <td>V0002</td>
-                    <td><a href="#" class="btn btn-sm btn-outline-primary">Ver</a></td>
-                    <td><a href="#" class="btn btn-sm btn-secondary disabled">Pagada</a></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
 </main>
 
 <!-- Bootstrap JS -->

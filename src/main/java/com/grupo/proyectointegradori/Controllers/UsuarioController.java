@@ -74,4 +74,5 @@ public class UsuarioController {
             @RequestParam("mes") String mes){
                 return usuarioRepository.getReporteVentaCliente(nombre,anio,mes);
     }
+    
 }

@@ -68,7 +68,7 @@ public class GastoDeVentasController {
         List<GastoResponse> resultado = gastoService.insertarGastoDetalle(idDetalle, costo, descripcion);
         model.addAttribute("tipoOperacion", "insertar");
         model.addAttribute("resultado", resultado);
-        return "resultadoGasto";
+        return "formGastoDetalle";
     }
     
     @GetMapping("/formularioInsertar")

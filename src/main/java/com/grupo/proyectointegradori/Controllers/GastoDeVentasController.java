@@ -58,6 +58,11 @@ public class GastoDeVentasController {
         return gastodeventas;
     }
     
+    @GetMapping("/inicio")
+    public String inicioGastoDetalle(){
+        return "formGastoDetalle";
+    }
+
     @PostMapping("/insertar")
     public String insertarGastoDetalle(
         @RequestParam(value = "idDetalle", required = false) Long idDetalle,

@@ -24,8 +24,8 @@ public class Cotizacion {
     String nroDocVendedor;
     @Column(name = "diasCredito")
     Integer diasCredito;
-    @Column(name = "idGastoDeVentas")
-    Long idGastoDeVentas;
+    @Column(name = "idVenta")
+    String idVenta;
     
     public Long getIdCotizacion() {
         return idCotizacion;
@@ -75,11 +75,11 @@ public class Cotizacion {
         this.diasCredito = diasCredito;
     }
     
-    public Long getIdGastoDeVentas() {
-        return idGastoDeVentas;
+    public String getIdVenta() {
+        return idVenta;
     }
     
-    public void setIdGastoDeVentas(Long idGastoDeVentas) {
-        this.idGastoDeVentas = idGastoDeVentas;
+    public void setIdVenta(String idVenta) {
+        this.idVenta = idVenta;
     }
 }

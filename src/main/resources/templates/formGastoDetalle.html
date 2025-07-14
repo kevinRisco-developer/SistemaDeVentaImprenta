@@ -6,14 +6,19 @@
         <title>Formulario GastoDeVentas</title>
     </head>
     <body>
-
+        <h1>Bienvenido/a al menú de gastos:</h1>
         <!-- Botones para escoger formularios -->
         <h2>Seleccione una acción</h2>
         <form method="get" th:action="@{/gastoDeVentas/formularioInsertar}">
             <button type="submit">Insertar Gasto de Detalle</button>
         </form>
+        <br>
         <form method="get" th:action="@{/gastoDeVentas/formularioActualizar}">
             <button type="submit">Actualizar Gasto de Detalle</button>
+        </form>
+        <br>
+        <form method="get" th:action="@{/}">
+            <button type="submit">Volver al menú</button>
         </form>
 
         <!-- Formulario de inserción -->
@@ -62,7 +67,7 @@
                     </select>
                 </form>
             </div>
-                
+            <br>
             <!-- 2. Selección de cotización -->
             <div th:if="${cotizaciones != null}">
                 <form th:action="@{/gastoDeVentas/formularioActualizar}" method="GET">
@@ -78,7 +83,7 @@
                     </select>
                 </form>
             </div>
-            
+            <br>
             <!-- 3. Selección de detalle -->
             <div th:if="${detalles != null}">
                 <form th:action="@{/gastoDeVentas/formularioActualizar}" method="GET">
@@ -95,7 +100,7 @@
                     </select>
                 </form>
             </div>
-            
+            <br>
             <!-- 4. Selección de gasto -->
             <div th:if="${gastos != null}">
                 <form th:action="@{/gastoDeVentas/formularioActualizar}" method="GET">
@@ -113,7 +118,7 @@
                     </select>
                 </form>
             </div>
-            
+            <br>
             <!-- 5. Formulario de edición -->
             <div th:if="${idGastoSeleccionado != null}"> 
                 <form th:action="@{/gastoDeVentas/actualizar}" method="post">
